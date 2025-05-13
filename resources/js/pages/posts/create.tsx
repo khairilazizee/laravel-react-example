@@ -15,10 +15,17 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+type PostForm = {
+    title: string;
+    post: string;
+    image: File | null;
+};
+
 export default function PostIndex() {
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors } = useForm<PostForm>({
         title: '',
         post: '',
+        image: null,
     });
 
     const submit = (e: any) => {
@@ -30,7 +37,7 @@ export default function PostIndex() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Post" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <form onSubmit={submit}>
+                <form onSubmit={submit} className="flex flex-col space-x-3" encType="multipart/form-data">
                     <div className="grid gap-2">
                         <label htmlFor="">Full Name</label>
                         <Input
@@ -57,6 +64,16 @@ export default function PostIndex() {
                         />
 
                         <InputError className="mt-2" message={errors.post} />
+                    </div>
+                    <div className="pt-10">
+                        <label htmlFor="">Image</label>
+                        <Input
+                            id="image"
+                            type="file"
+                            accept=".pdf"
+                            className="mt-1 block w-full border-1 border-gray-300 p-1"
+                            onChange={(e) => setData('image', e.target.files?.[0] ?? null)}
+                        />
                     </div>
                     <div className="pt-5">
                         <button

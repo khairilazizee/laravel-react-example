@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -35,10 +36,17 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'post' => 'required|string',
+            'image' => 'required|mimes:pdf'
         ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = Storage::disk('public')->put('posts', $request->file('image'));
+        }
+
         Post::create([
             'title' => $request->title,
             'post' => $request->post,
+            'image' => $imagePath
         ]);
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }

@@ -13,6 +13,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 type post = {
     id: number;
     title: string;
+    image: string;
     created_at: string;
 };
 
@@ -48,6 +49,7 @@ export default function PostIndex() {
                     <thead className="bg-white text-black">
                         <tr>
                             <th className="text-left">Title</th>
+                            <th className="text-left">Image</th>
                             <th className="text-left">Published At</th>
                             <th className="text-left">Actions</th>
                         </tr>
@@ -57,6 +59,7 @@ export default function PostIndex() {
                             <tbody>
                                 <tr>
                                     <td>{post.title}</td>
+                                    <td>{post.image ? 'Image here' : 'No Image'}</td>
                                     <td>{dayjs(post.created_at).format('DD/MM/YYYY')}</td>
                                     <td>
                                         <form onSubmit={(e) => destroyPost(e, post.id)}>
